@@ -53,29 +53,31 @@ public class GoodsController {
 	}
 	@RequestMapping(path="/savegoods",method = {RequestMethod.GET,RequestMethod.POST})
 	public boolean updateGoods( Goods goods,MultipartFile file) {
-		if (file.isEmpty() || file.getSize() == 0) { 
-			  return false;
-		}
-		try {
-			MinioClient minioClient = new MinioClient("http://localhost:9000", "minioadmin", "minioadmin"); // 连接
-			if (!minioClient.bucketExists("goods")) { // 是否存在名为“test”的bucket
-				minioClient.makeBucket("goods");
+		boolean rt=false;
+		if(file!=null) {
+			try {
+				MinioClient minioClient = new MinioClient("http://localhost:9000", "minioadmin", "minioadmin"); // 连接
+				if (!minioClient.bucketExists("goods")) { // 是否存在名为“test”的bucket
+					minioClient.makeBucket("goods");
+				}
+				String fileName = file.getOriginalFilename();
+				String newName = UUID.randomUUID().toString().replaceAll("-", "")+fileName.substring(fileName.lastIndexOf("."));
+				InputStream inputStream = file.getInputStream(); // 获取file的inputStream
+				//image/png
+				minioClient.putObject("goods", newName, inputStream,"image/png"); // 上传
+				//minioClient.putObject("goods", newName, inputStream, "application/octet-stream"); // 上传
+				inputStream.close();
+				String url = minioClient.getObjectUrl("goods", newName); // 文件访问路径
+				goods.setGoodsImage(url);
+				rt= cardService.updateGoods(goods);	
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			String fileName = file.getOriginalFilename();
-			String newName = UUID.randomUUID().toString().replaceAll("-", "")+fileName.substring(fileName.lastIndexOf("."));
-			InputStream inputStream = file.getInputStream(); // 获取file的inputStream
-			//image/png
-			minioClient.putObject("goods", newName, inputStream,"image/png"); // 上传
-			//minioClient.putObject("goods", newName, inputStream, "application/octet-stream"); // 上传
-			inputStream.close();
-			String url = minioClient.getObjectUrl("goods", newName); // 文件访问路径
-			goods.setGoodsImage(url);
-			return cardService.updateGoods(goods);	
-		} catch (Exception e) {
-			e.printStackTrace();
+		}else {
+			rt=cardService.updateGoods(goods);
 		}
 		
-		return true;
+		return rt;
 	}
 	
 	
