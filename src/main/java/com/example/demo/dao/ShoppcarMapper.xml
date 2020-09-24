@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.ShoppcarMapper" >
+  <resultMap id="BaseResultMap" type="com.example.demo.pojo.Shoppcar" >
+    <id column="shoppcar_id" property="shoppcarId" jdbcType="INTEGER" />
+    <result column="shoppcar_stuid" property="shoppcarStuid" jdbcType="INTEGER" />
+    <result column="shoppcar_name" property="shoppcarName" jdbcType="VARCHAR" />
+    <result column="shoppcar_price" property="shoppcarPrice" jdbcType="INTEGER" />
+    <result column="shoppcar_num" property="shoppcarNum" jdbcType="INTEGER" />
+    <result column="shoppcar_image" property="shoppcarImage" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    shoppcar_id, shoppcar_stuid, shoppcar_name, shoppcar_price, shoppcar_num, shoppcar_image
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shoppcar
+    where shoppcar_id = #{shoppcarId,jdbcType=INTEGER}
+  </select>
+   <select id="shoppcarList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from shoppcar
+    where shoppcar_stuid = #{stuId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from shoppcar
+    where shoppcar_id = #{shoppcarId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.example.demo.pojo.Shoppcar" >
+    insert into shoppcar (shoppcar_id, shoppcar_stuid, shoppcar_name, 
+      shoppcar_price, shoppcar_num, shoppcar_image
+      )
+    values (#{shoppcarId,jdbcType=INTEGER}, #{shoppcarStuid,jdbcType=INTEGER}, #{shoppcarName,jdbcType=VARCHAR}, 
+      #{shoppcarPrice,jdbcType=INTEGER}, #{shoppcarNum,jdbcType=INTEGER}, #{shoppcarImage,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.demo.pojo.Shoppcar" >
+    insert into shoppcar
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="shoppcarId != null" >
+        shoppcar_id,
+      </if>
+      <if test="shoppcarStuid != null" >
+        shoppcar_stuid,
+      </if>
+      <if test="shoppcarName != null" >
+        shoppcar_name,
+      </if>
+      <if test="shoppcarPrice != null" >
+        shoppcar_price,
+      </if>
+      <if test="shoppcarNum != null" >
+        shoppcar_num,
+      </if>
+      <if test="shoppcarImage != null" >
+        shoppcar_image,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="shoppcarId != null" >
+        #{shoppcarId,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarStuid != null" >
+        #{shoppcarStuid,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarName != null" >
+        #{shoppcarName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoppcarPrice != null" >
+        #{shoppcarPrice,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarNum != null" >
+        #{shoppcarNum,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarImage != null" >
+        #{shoppcarImage,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.demo.pojo.Shoppcar" >
+    update shoppcar
+    <set >
+      <if test="shoppcarStuid != null" >
+        shoppcar_stuid = #{shoppcarStuid,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarName != null" >
+        shoppcar_name = #{shoppcarName,jdbcType=VARCHAR},
+      </if>
+      <if test="shoppcarPrice != null" >
+        shoppcar_price = #{shoppcarPrice,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarNum != null" >
+        shoppcar_num = #{shoppcarNum,jdbcType=INTEGER},
+      </if>
+      <if test="shoppcarImage != null" >
+        shoppcar_image = #{shoppcarImage,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where shoppcar_id = #{shoppcarId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.demo.pojo.Shoppcar" >
+    update shoppcar
+    set shoppcar_stuid = #{shoppcarStuid,jdbcType=INTEGER},
+      shoppcar_name = #{shoppcarName,jdbcType=VARCHAR},
+      shoppcar_price = #{shoppcarPrice,jdbcType=INTEGER},
+      shoppcar_num = #{shoppcarNum,jdbcType=INTEGER},
+      shoppcar_image = #{shoppcarImage,jdbcType=VARCHAR}
+    where shoppcar_id = #{shoppcarId,jdbcType=INTEGER}
+  </update>
+</mapper>
